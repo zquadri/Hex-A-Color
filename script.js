@@ -1,16 +1,14 @@
 // prettier-ignore
 const colorArr = ['A', 'B', 'C', 'D', 'E', 'F','0','1','2','3','4','5','6','7','8','9'];
 const squareContainer = document.querySelector('.square-container');
-const gameObj = {
+const game = {
   level: 1,
   lives: 4,
   correctColor: ''
 };
 
 //creates n squares where n is: [4] if player is on level 1, otherwise n is: [4 + the current level].
-function playGame() {
-  const squaresToCreate = gameObj.level > 1 ? 4 + gameObj.level : 4;
-  console.log(squaresToCreate);
+function createSquares(squaresToCreate) {
   const colorSet = new Set();
   for (let i = 0; i < squaresToCreate; i++) {
     let color = generateRandomColor();
@@ -25,19 +23,27 @@ function playGame() {
         }
       }
     }
-    let square = document.createElement('div');
+    const square = document.createElement('div');
     square.classList.add('square');
     square.style.background = color;
+    square.addEventListener('click', winOrLose);
     squareContainer.appendChild(square);
   }
 }
 
+function clearSquares() {
+  const allSquares = document.querySelectorAll('.square');
+  for (let i = 0; i < allSquares.length; i++) {
+    const square = allSquares[i];
+    square.remove();
+  }
+}
 //returns a random hexcolor.
 function generateRandomColor() {
   const arrSize = colorArr.length;
   let color = '#';
   for (let i = 0; i < 6; i++) {
-    let randomInt = Math.floor(Math.random() * arrSize);
+    const randomInt = Math.floor(Math.random() * arrSize);
     color += colorArr[randomInt];
   }
   return color;
@@ -45,67 +51,74 @@ function generateRandomColor() {
 
 //Finds and sets the correct color for each level.
 function setCorrectColor() {
-  const numOfSquares = gameObj.level > 1 ? 4 + gameObj.level : 4;
-  const squares = squareContainer.getElementsByTagName('*');
-  // prettier-ignore
-  gameObj.correctColor = fullHexColor(squares[Math.floor(Math.random() * squares.length)].style.background);
-  let colorHeader = document.querySelector('.curr-Color');
-  colorHeader.textContent = gameObj.correctColor;
+  const squares = document.querySelectorAll('.square');
+  const randomVal = Math.floor(Math.random() * squares.length);
+  game.correctColor = getFullHexColor(squares[randomVal].style.background);
+  const colorHeader = document.querySelector('.curr-Color');
+  colorHeader.textContent = game.correctColor;
 }
 
 //Converts a single number to its hex-equivalent.
-var rgbToHex = function(rgb) {
-  var hex = Number(rgb).toString(16);
+
+function rgbToHex(rgb) {
+  let hex = Number(rgb).toString(16);
   if (hex.length < 2) {
     hex = '0' + hex;
   }
   return hex;
-};
+}
 
 //passes in values to rgbToHex to obtain a full hexcolor string.
-var fullHexColor = function(s) {
-  s = s.substring(4, s.length - 1);
-  const rgbColors = s.split(',');
-  var red = rgbToHex(rgbColors[0]);
-  var green = rgbToHex(rgbColors[1]);
-  var blue = rgbToHex(rgbColors[2]);
-  let result = '#' + red + green + blue;
+function getFullHexColor(s) {
+  const rgbSubStr = s.substring(4, s.length - 1);
+  const rgbColors = rgbSubStr.split(',');
+  const red = rgbToHex(rgbColors[0]);
+  const green = rgbToHex(rgbColors[1]);
+  const blue = rgbToHex(rgbColors[2]);
+  const result = '#' + red + green + blue;
   return result.toUpperCase();
-};
+}
 
-playGame();
-setCorrectColor();
-console.log(gameObj.correctColor);
-winOrLose();
-
-function winOrLose() {
-  const squares = document.querySelectorAll('.square');
+//decides whether square clicked was correct or not & checks to see if player lost the game.
+function winOrLose(e) {
+  const square = e.target;
+  const squareColor = getFullHexColor(square.style.background);
   const livesText = document.querySelector('#lives');
-  console.log(squares.length);
-  for (let i = 0; i < squares.length; i++) {
-    const square = squares[i];
-    square.addEventListener('click', function() {
-      if (fullHexColor(square.style.background) === gameObj.correctColor) {
-        gameObj.lives++;
-        gameObj.level++;
-        console.log(gameObj.level);
-        // playGame();
-        // setCorrectColor();
-        // winOrLose();
-        livesText.textContent = 'Lives Remaining:' + gameObj.lives;
-      } else {
-        gameObj.lives--;
-        if (gameObj.lives <= 0) {
-          let btn = document.createElement('button');
-          btn.classList.add('play-again-btn');
-          livesText.textContent = 'Tough! Better luck HEX time!';
-          btn.textContent = 'Play Again';
-          main.appendChild(btn);
-        }
-        livesText.textContent = 'Lives Remaining:' + ' ' + gameObj.lives;
-      }
-    });
+  //clicked correct square
+  if (squareColor === game.correctColor) {
+    game.level++;
+    clearSquares();
+    createSquares(4 + game.level);
+    setCorrectColor();
+  } else {
+    game.lives--;
+    //if player loses
+    if (game.lives === 0) {
+      const btn = document.createElement('button');
+      btn.classList.add('play-again-btn');
+      btn.textContent = 'Play Again!';
+      btn.addEventListener('click', startGame);
+      const main = document.querySelector('main');
+      main.appendChild(btn);
+    }
+    square.remove();
+    livesText.textContent = `Lives Remaining: ${game.lives} `;
   }
 }
-// const main = document.querySelector('main');
-// main.appendChild(btn);
+
+//initializes the game
+function startGame() {
+  const btn = document.querySelector('.play-again-btn');
+  if (btn) {
+    btn.remove();
+  }
+  game.lives = 4;
+  game.level = 1;
+  clearSquares();
+  const livesText = document.querySelector('#lives');
+  createSquares(4);
+  setCorrectColor();
+  livesText.textContent = `Lives Remaining: ${game.lives} `;
+}
+
+startGame();
