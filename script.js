@@ -1,7 +1,6 @@
 // prettier-ignore
 const colorArr = ['A', 'B', 'C', 'D', 'E', 'F','0','1','2','3','4','5','6','7','8','9'];
 const squareContainer = document.querySelector('.square-container');
-
 const gameObj = {
   level: 1,
   lives: 4,
@@ -44,6 +43,7 @@ function generateRandomColor() {
   return color;
 }
 
+//Finds and sets the correct color for each level.
 function setCorrectColor() {
   const numOfSquares = gameObj.level > 1 ? 4 + gameObj.level : 4;
   const squares = squareContainer.getElementsByTagName('*');
@@ -53,6 +53,7 @@ function setCorrectColor() {
   colorHeader.textContent = gameObj.correctColor;
 }
 
+//Converts a single number to its hex-equivalent.
 var rgbToHex = function(rgb) {
   var hex = Number(rgb).toString(16);
   if (hex.length < 2) {
@@ -61,6 +62,7 @@ var rgbToHex = function(rgb) {
   return hex;
 };
 
+//passes in values to rgbToHex to obtain a full hexcolor string.
 var fullHexColor = function(s) {
   s = s.substring(4, s.length - 1);
   const rgbColors = s.split(',');
@@ -87,17 +89,23 @@ function winOrLose() {
         gameObj.lives++;
         gameObj.level++;
         console.log(gameObj.level);
-        playGame();
-        setCorrectColor();
-        winOrLose();
+        // playGame();
+        // setCorrectColor();
+        // winOrLose();
         livesText.textContent = 'Lives Remaining:' + gameObj.lives;
       } else {
         gameObj.lives--;
-        livesText.textContent = 'Lives Remaining:' + gameObj.lives;
+        if (gameObj.lives <= 0) {
+          let btn = document.createElement('button');
+          btn.classList.add('play-again-btn');
+          livesText.textContent = 'Tough! Better luck HEX time!';
+          btn.textContent = 'Play Again';
+          main.appendChild(btn);
+        }
+        livesText.textContent = 'Lives Remaining:' + ' ' + gameObj.lives;
       }
     });
   }
 }
-// square.addEventListener('click', function() {
-//   console.log('hi');
-// });
+// const main = document.querySelector('main');
+// main.appendChild(btn);

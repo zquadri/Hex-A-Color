@@ -11,16 +11,16 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: #4e54c8; /* fallback for old browsers */
+  background: #00c6ff; /* fallback for old browsers */
   background: -webkit-linear-gradient(
-    to bottom,
-    #8f94fb,
-    #4e54c8
+    to right,
+    #0072ff,
+    #00c6ff
   ); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(
-    to bottom,
-    #8f94fb,
-    #4e54c8
+    to right,
+    #0072ff,
+    #00c6ff
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
@@ -28,6 +28,7 @@ header {
   font-family: 'Montserrat', sans-serif;
   letter-spacing: 0px;
   font-weight: 200;
+  font-size: 1.25em;
   /* box-shadow: 0px 6px 10px rgba(130, 155, 220, 0.5); */
   text-align: center;
   height: 4.5em;
@@ -37,7 +38,7 @@ main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 .game-inst {
@@ -51,6 +52,7 @@ main {
   margin: 10px 0;
 }
 .square-container {
+  padding: 20px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -69,8 +71,25 @@ main {
 .square:hover {
   filter: brightness(135%);
 }
-footer {
+
+#lives {
+  font-size: 20px;
+  color: white;
+}
+.play-again-btn {
+  margin: 10px;
+  border-radius: 5px;
+  background-color: #0f2c5c;
+  border: none;
+  color: white;
+  padding: 10px 20px;
   text-align: center;
-  color: grey;
+  text-decoration: none;
+  font-size: 16px;
+}
+footer {
+  font-size: 0.8em;
+  text-align: center;
+  color: rgb(197, 195, 195);
   height: 2em;
 }
