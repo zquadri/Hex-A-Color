@@ -11,16 +11,16 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: #f0c27b; /* fallback for old browsers */
+  background: #ff4e50; /* fallback for old browsers */
   background: -webkit-linear-gradient(
-    to right,
-    #4b1248,
-    #f0c27b
+    to top,
+    #f9d423,
+    #ff4e50
   ); /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(
-    to right,
-    #4b1248,
-    #f0c27b
+    to top,
+    #f9d423,
+    #ff4e50
   ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
@@ -43,7 +43,7 @@ main {
 }
 .game-inst {
   color: white;
-  font-size: 25px;
+  font-size: 2em;
   top: 40%;
   text-align: center;
   position: relative;
@@ -77,19 +77,31 @@ main {
   color: white;
 }
 .play-again-btn {
-  margin: 10px;
+  font-family: roboto;
+  font-weight: 500;
+  margin: 25px;
   border-radius: 5px;
-  background-color: #0f2c5c;
+  background: #6e0a05;
   border: none;
-  color: white;
+  color: #fff;
   padding: 10px 20px;
   text-align: center;
   text-decoration: none;
   font-size: 16px;
+}
+.play-again-btn:hover {
+  filter: brightness(135%);
 }
 footer {
   font-size: 0.8em;
   text-align: center;
   color: rgb(197, 195, 195);
   height: 2em;
+}
+#game-over {
+  padding: 5px;
+  color: white;
+  font-family: roboto;
+  font-size: 3.2em;
+  font-weight: 300px;
 }

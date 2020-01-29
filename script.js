@@ -31,6 +31,7 @@ function createSquares(squaresToCreate) {
   }
 }
 
+//removes all squares
 function clearSquares() {
   const allSquares = document.querySelectorAll('.square');
   for (let i = 0; i < allSquares.length; i++) {
@@ -38,6 +39,7 @@ function clearSquares() {
     square.remove();
   }
 }
+
 //returns a random hexcolor.
 function generateRandomColor() {
   const arrSize = colorArr.length;
@@ -59,7 +61,6 @@ function setCorrectColor() {
 }
 
 //Converts a single number to its hex-equivalent.
-
 function rgbToHex(rgb) {
   let hex = Number(rgb).toString(16);
   if (hex.length < 2) {
@@ -92,22 +93,35 @@ function winOrLose(e) {
     setCorrectColor();
   } else {
     game.lives--;
-    //if player loses
     if (game.lives === 0) {
+      const main = document.querySelector('main');
+      const gameOverText = document.querySelector('#game-over');
+      const livesText = document.querySelector('#lives');
+      const colorHeader = document.querySelector('.curr-Color');
+      const instructionsHeader = document.querySelector('.instructions');
+      colorHeader.textContent = '';
+      instructionsHeader.textContent = '';
+      livesText.textContent = '';
+      gameOverText.textContent = 'Tough! HEX better next time!';
+      clearSquares();
       const btn = document.createElement('button');
       btn.classList.add('play-again-btn');
       btn.textContent = 'Play Again!';
       btn.addEventListener('click', startGame);
-      const main = document.querySelector('main');
       main.appendChild(btn);
+    } else {
+      square.remove();
+      livesText.textContent = `Lives Remaining: ${game.lives} `;
     }
-    square.remove();
-    livesText.textContent = `Lives Remaining: ${game.lives} `;
   }
 }
 
 //initializes the game
 function startGame() {
+  const gameOverText = document.querySelector('#game-over');
+  gameOverText.textContent = '';
+  const instructionsHeader = document.querySelector('.instructions');
+  instructionsHeader.textContent = ' Choose the square that has a color of :';
   const btn = document.querySelector('.play-again-btn');
   if (btn) {
     btn.remove();
@@ -122,3 +136,4 @@ function startGame() {
 }
 
 startGame();
+//
